@@ -1,0 +1,14 @@
+{
+    "name": "yggverse/gemini",
+    "description": "PHP 8 Library for Gemini Protocol",
+    "keywords": [ "yggverse", "gemini", "wiki", "dokuwiki", "markdown" ],
+    "homepage": "https://github.com/yggverse/gemini-php",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yggverse\\Gemini\\": "src/"
+        }
+    },
+    "require": {}
+}
