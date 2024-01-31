@@ -23,17 +23,11 @@ class Reader
         '/^[\s]?[=]{2}([^=]+)[=]{2}/' => '### $1' . PHP_EOL,
         '/^[\s]?[=]{1}([^=]+)[=]{1}/' => '### $1' . PHP_EOL,
 
-        // Tags (@TODO make per-line internal content processing)
-        '/<code>/i' => PHP_EOL . '```' . PHP_EOL,
-        '/<\/code>/i' => PHP_EOL . '```' . PHP_EOL,
-
-        '/<file>/i' => PHP_EOL . '```' . PHP_EOL,
-        '/<file[\s]?[-]?[\s]?([^>]+)>/i' => '$1' . PHP_EOL . '```' . PHP_EOL,
-        '/<\/file>/i' => '```',
-
+        // Tags
         '/\*\*([^\*]{2,})\*\*/' => '$1',
         '/\'\'([^\']{2,})\'\'/' => '$1',
         '/\%\%([^\%]{2,})\%\%/' => '$1',
+        '/\/\/([^\/]{2,})\/\//' => '$1',
         '/([^:]{1})\/\/([^\/]{2,})\/\//' => '$1 $2',
 
         // Links
@@ -68,6 +62,7 @@ class Reader
 
         // Plugins
         '/~~DISCUSSION~~/' => '', // @TODO
+        '/~~INFO:syntaxplugins~~/' => '', // @TODO
 
         // Final corrections
         '/[\n\r]+[.,;:]+/' => PHP_EOL
@@ -101,12 +96,61 @@ class Reader
         $this->_rules[$key] = $value;
     }
 
-    public function toGemini(string $data): string
+    public function toGemini(string $data, ?array &$lines = []): string
     {
-        $lines = [];
+        $raw = false;
 
         foreach ((array) explode(PHP_EOL, $data) as $line)
         {
+            // Skip any formating in lines between code tag
+            if (!$raw && preg_match('/<(code|file)([^>])*>/i', $line, $matches))
+            {
+                // Prepend tag meta or filename as plain description
+                if (!empty($matches[0]))
+                {
+                    $lines[] = trim(
+                        $matches[0],
+                        '<>'
+                    );
+                }
+
+                $lines[] = '```';
+                $lines[] = $line;
+
+                $raw = true;
+
+                // Make sure inline tag closed
+                if (preg_match('/<\/(code|file)>/i', $line))
+                {
+                    $lines[] = $line;
+                    $lines[] = '```';
+
+                    $raw = false;
+
+                    continue;
+                }
+
+                continue;
+            }
+
+            if ($raw && preg_match('/<\/(code|file)>/i', $line))
+            {
+                $lines[] = $line;
+                $lines[] = '```';
+
+                $raw = false;
+
+                continue;
+            }
+
+            if ($raw)
+            {
+                $lines[] = $line;
+
+                continue;
+            }
+
+            // Apply common line rules
             $lines[] = preg_replace(
                 array_keys(
                     $this->_rules
