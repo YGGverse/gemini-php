@@ -4,9 +4,9 @@ PHP 8 Library for Gemini Protocol
 
 ## DokuWiki
 
-Toolkit provides DokuWiki integration API for Gemini.
+Toolkit provides DokuWiki API for Gemini.
 
-Allows to simple deploy new apps or make existing website mirror.
+Allows to simple deploy new apps or make existing website mirror
 
 ### Examples
 
