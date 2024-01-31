@@ -23,7 +23,7 @@ class Reader
         '/^[\s]?[=]{2}([^=]+)[=]{2}/' => '### $1' . PHP_EOL,
         '/^[\s]?[=]{1}([^=]+)[=]{1}/' => '### $1' . PHP_EOL,
 
-        // Tags
+        // Tags (@TODO make per-line internal content processing)
         '/<code>/i' => PHP_EOL . '```' . PHP_EOL,
         '/<\/code>/i' => PHP_EOL . '```' . PHP_EOL,
 
@@ -34,15 +34,30 @@ class Reader
         '/\*\*([^\*]{2,})\*\*/' => '$1',
         '/\'\'([^\']{2,})\'\'/' => '$1',
         '/\%\%([^\%]{2,})\%\%/' => '$1',
-        '/[^:]{1}\/\/([^\/]{2,})\/\//' => '$1',
+        '/([^:]{1})\/\/([^\/]{2,})\/\//' => '$1 $2',
 
         // Links
-        '/\{\{([^:]+):([^\}]{2,})\}\}/' => PHP_EOL . '=> $1 $1' . PHP_EOL, // @TODO
-        '/\{\{indexmenu\>:([^\}]{2,})\}\}/' => PHP_EOL . '=> $1 $1' . PHP_EOL, // @TODO
-        '/\[\[wp([A-z]{2})\>([^\|]+)\|([^\]]{2,})\]\]/' => PHP_EOL . '=> https://$1.wikipedia.org/wiki/$2 $3' . PHP_EOL,
-        '/\[\[wp\>([^\|]+)\|([^\]]{2,})\]\]/' => PHP_EOL . '=> https://en.wikipedia.org/wiki/$1 $2' . PHP_EOL,
-        '/\[\[([^|]+)\|([^\]]{2,})\]\]/' => PHP_EOL . '=> $1 $2' . PHP_EOL,
-        //'/((gemini|https?):\/\/[^\s]+)/' => PHP_EOL . '=> $1' . PHP_EOL, // @TODO incorrect
+
+        /// Wikipedia
+        '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://$1.wikipedia.org/wiki/$2 $3' . PHP_EOL,
+        '/\[\[wp>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://en.wikipedia.org/wiki/$1 $2' . PHP_EOL,
+
+        /// Dokuwiki
+        '/\[\[doku>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://www.dokuwiki.org/$1 $2' . PHP_EOL,
+
+        /// Index
+        '/\{\{indexmenu>:([^\}]+)\}\}/i' => PHP_EOL . '=> $1' . PHP_EOL, // @TODO
+        '/\{\{indexmenu_n>[\d]+\}\}/i' => '', // @TODO
+
+        /// Relative
+        '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2$3' . PHP_EOL,
+        '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2' . PHP_EOL,
+
+        // Related
+        '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
+
+        /// Absolute
+        '/\[\[(https?:|gemini:)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> $1$2 $3' . PHP_EOL,
 
         // List
         '/^[\s]?-/' => '* ',
