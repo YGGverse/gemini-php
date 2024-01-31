@@ -34,17 +34,20 @@ class Filesystem
 
     public function getPagePathByUri(string $uri): ?string
     {
-        $uri = urldecode(
-            $uri
-        );
-
         $path = sprintf(
             '%s/pages/%s.txt',
             $this->_path,
             str_replace(
                 ':',
                 '/',
-                $uri
+                trim(
+                    mb_strtolower(
+                        urldecode(
+                            $uri
+                        )
+                    ),
+                    ':'
+                )
             )
         );
 
