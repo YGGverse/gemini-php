@@ -267,7 +267,7 @@ class Reader
         }
     }
 
-    public function getLinks(string $gemini, ?string $regex = '/[A-z]+:\/\/\S+/'): array
+    public function getLinks(string $gemini, ?string $regex = '/(https?|gemini):\/\/\S+/'): array
     {
         $links = [];
 
