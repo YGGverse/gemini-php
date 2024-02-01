@@ -32,6 +32,9 @@ class Reader
 
         // Links
 
+        /// Detect IPv6 (used as no idea how to resolve square quotes in rules below)
+        '/\[\[([^\[]+)\[([A-f:0-9]*)\]([^\]]+)\]\]/' => '$1~IPv6:open~$2~IPv6:close~$3',
+
         /// Remove extra spaces
         '/\[\[\s?([^\|]+)\s?\|\s?([^\]]+)\s?\]\]/' => '[[$1|$2]]',
         '/\[\[\s?([^\]]+)\s?\]\]/' => '[[$1]]',
@@ -63,6 +66,10 @@ class Reader
         /// Absolute
         '/\[\[(https?:)([^\|]+)\|([^\]]+)\]\]/i' => '$3 ( $1$2 )',
         '/\[\[(https?:)([^\]]+)\]\]/i' => '$1$2', // @TODO
+
+        /// Apply macros
+        '/~IPv6:open~/' => '[',
+        '/~IPv6:close~/' => ']',
 
         // List
         '/^[\s]?-/' => '* ',
