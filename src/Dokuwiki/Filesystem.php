@@ -68,7 +68,7 @@ class Filesystem
                 '%s/pages/',
                 $this->_path
             ),
-            null,
+            '',
             $path
         );
 
@@ -93,9 +93,68 @@ class Filesystem
             $path
         );
 
-        return urlencode(
+        return $path;
+    }
+
+    public function getDirectoryPathByUri(string $uri = ''): ?string
+    {
+        $path = rtrim(
+            sprintf(
+                '%s/pages/%s',
+                $this->_path,
+                str_replace(
+                    ':',
+                    '/',
+                    mb_strtolower(
+                        urldecode(
+                            $uri
+                        )
+                    )
+                )
+            ),
+            '/'
+        );
+
+        if (!isset($this->_tree[$path]) || !is_dir($path) || !is_readable($path))
+        {
+            return null;
+        }
+
+        return $path;
+    }
+
+    public function getDirectoryUriByPath(string $path): ?string
+    {
+        if (!isset($this->_tree[$path]) || !is_dir($path) || !is_readable($path))
+        {
+            return null;
+        }
+
+        $path = str_replace(
+            sprintf(
+                '%s/pages/',
+                $this->_path
+            ),
+            '',
             $path
         );
+
+        $path = trim(
+            $path,
+            '/'
+        );
+
+        $path = str_replace(
+            [
+                '/'
+            ],
+            [
+                ':'
+            ],
+            $path
+        );
+
+        return $path;
     }
 
     private function _index(string $path): void

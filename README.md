@@ -136,6 +136,7 @@ var_dump (
 )
 ```
 
+#### Filesystem::getDirectoryPathByUri
 #### Filesystem::getPagePathByUri
 
 Return absolute path to stored page file
@@ -148,6 +149,7 @@ var_dump (
 )
 ```
 
+#### Filesystem::getDirectoryUriByPath
 #### Filesystem::getPageUriByPath
 
 Return page URI in `dokuwiki:format`
