@@ -40,14 +40,17 @@ class Reader
         '/\{\{\s?([^\}]+)\s?\}\}/' => '{{$1}}',
 
         /// Wikipedia
-        '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/i' => '$3 ( https://$1.wikipedia.org/wiki/$2 )',
+        '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/ui' => '$3 ( https://$1.wikipedia.org/wiki/$2 )',
         '/\[\[wp>([^\|]+)\|([^\]]+)\]\]/i' => '$2 ( https://en.wikipedia.org/wiki/$1 )',
+        '/\[\[wp([A-z]{2,})>([^\]]+)\]\]/i' => '$2 ( https://$1.wikipedia.org/wiki/$2 )',
+        '/\[\[wp>([^\]]+)\]\]/i' => '$1 ( https://en.wikipedia.org/wiki/$1 )',
 
         /// Dokuwiki
         '/\[\[doku>([^\|]+)\|([^\]]+)\]\]/i' => '$2( https://www.dokuwiki.org/$1 )',
+        '/\[\[doku>([^\]]+)\]\]/i' => '$1( https://www.dokuwiki.org/$1 )',
 
         /// Index
-        '/\{\{indexmenu>:([^\}]+)\}\}/i' => '$1', // @TODO
+        '/\{\{indexmenu>:([^\}]+)\}\}/i' => '', // @TODO
         '/\{\{indexmenu_n>[\d]+\}\}/i' => '', // @TODO
 
         // Related
