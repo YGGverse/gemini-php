@@ -75,14 +75,32 @@ echo $reader->toGemini(
 Get document title
 
 ```
-echo $reader->getH1(
+$gemini = $reader->toGemini(
     file_get_contents(
         '/host/data/pages/index.txt'
     )
 );
+
+echo $reader->getH1(
+    $gemini
+);
 ```
 
 #### Reader::getLinks
+
+Get document links
+
+```
+$gemini = $reader->toGemini(
+    file_get_contents(
+        '/host/data/pages/index.txt'
+    )
+);
+
+echo $reader->getLinks(
+    $gemini
+);
+```
 
 ### Filesystem
 

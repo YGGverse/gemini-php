@@ -246,12 +246,12 @@ class Reader
         );
     }
 
-    public function getH1(string $data): ?string
+    public function getH1(string $gemini, ?string $regex = '/^[\s]?#([^#]+)/'): ?string
     {
-        foreach ((array) explode(PHP_EOL, $data) as $line)
+        foreach ((array) explode(PHP_EOL, $gemini) as $line)
         {
             preg_match_all(
-                '/^[\s]?#([^#]+)/',
+                $regex,
                 $line,
                 $matches
             );
@@ -265,5 +265,28 @@ class Reader
                 break;
             }
         }
+    }
+
+    public function getLinks(string $gemini, ?string $regex = '/[A-z]+:\/\/\S+/'): array
+    {
+        $links = [];
+
+        preg_match_all(
+            $regex,
+            $gemini,
+            $matches
+        );
+
+        if (!empty($matches[0]))
+        {
+            foreach ((array) $matches[0] as $link)
+            {
+                $links[] = trim(
+                    $link
+                );
+            }
+        }
+
+        return $links;
     }
 }
