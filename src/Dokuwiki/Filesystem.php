@@ -58,6 +58,11 @@ class Filesystem
 
     public function getPageUriByPath(string $path): ?string
     {
+        if (!in_array($path, $this->_list) || !is_file($path) || !is_readable($path))
+        {
+            return null;
+        }
+
         $path = str_replace(
             sprintf(
                 '%s/pages/',
