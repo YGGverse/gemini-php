@@ -2,6 +2,12 @@
 
 PHP 8 Library for Gemini Protocol
 
+## Usage
+
+```
+composer require yggverse/gemini:dev-main
+```
+
 ## DokuWiki
 
 Toolkit provides DokuWiki API for Gemini.
