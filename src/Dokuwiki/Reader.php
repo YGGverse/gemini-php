@@ -126,9 +126,10 @@ class Reader
                 // Prepend tag meta or filename as plain description
                 if (!empty($matches[0]))
                 {
-                    $lines[] = trim(
-                        $matches[0],
-                        '<>'
+                    $lines[] = preg_replace(
+                        '/^<.*\s(.+)>$/',
+                        '$1',
+                        $matches[0]
                     );
                 }
 
