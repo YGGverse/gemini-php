@@ -6,7 +6,14 @@ namespace Yggverse\Gemini\Dokuwiki;
 
 class Reader
 {
-    private array $_rules =
+    private array $_macros =
+    [
+        '~URL:base~' => null,
+        '~IPv6:open~' => '[',
+        '~IPv6:close~' => ']',
+    ];
+
+    private array $_rule =
     [
         // Headers
         '/^([\s]?)#([^#]+)/' => '$1#$2' . PHP_EOL,
@@ -60,16 +67,12 @@ class Reader
         '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
 
         /// Relative
-        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\|]+)\|([^\]]+)\]\]/i' => ' $2$3 ( /$1 )',
-        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\]]+)\]\]/i' => ' $2 ( /$1 )',
+        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\|]+)\|([^\]]+)\]\]/i' => ' $2$3 ( ~URL:base~$1 )',
+        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\]]+)\]\]/i' => ' $2 ( ~URL:base~$1 )',
 
         /// Absolute
         '/\[\[(https?:)([^\|]+)\|([^\]]+)\]\]/i' => '$3 ( $1$2 )',
         '/\[\[(https?:)([^\]]+)\]\]/i' => '$1$2', // @TODO
-
-        /// Apply macros
-        '/~IPv6:open~/' => '[',
-        '/~IPv6:close~/' => ']',
 
         // List
         '/^[\s]?-/' => '* ',
@@ -90,37 +93,80 @@ class Reader
     {
         if ($rules)
         {
-            $this->_rules = $rules;
+            $this->_rule = $rules;
         }
     }
 
+    // Macros operations
+    public function getMacroses(): array
+    {
+        $this->_macros;
+    }
+
+    public function setMacroses(array $macros)
+    {
+        $this->_macros = $macros;
+    }
+
+    public function getMacros(string $key, string $value): ?string
+    {
+        $this->_macros[$key] = isset($this->_macros[$key]) ? $value : null;
+    }
+
+    public function setMacros(string $key, ?string $value): void
+    {
+        if ($value)
+        {
+            $this->_macros[$key] = $value;
+        }
+
+        else
+        {
+            unset(
+                $this->_macros[$key]
+            );
+        }
+    }
+
+    // Rule operations
     public function getRules(): array
     {
-        $this->_rules;
+        $this->_rule;
     }
 
     public function setRules(array $rules)
     {
-        $this->_rules = $rules;
+        $this->_rule = $rules;
     }
 
     public function getRule(string $key, string $value): ?string
     {
-        $this->_rules[$key] = isset($this->_rules[$key]) ? $value : null;
+        $this->_rule[$key] = isset($this->_rule[$key]) ? $value : null;
     }
 
-    public function setRule(string $key, string $value): void
+    public function setRule(string $key, ?string $value): void
     {
-        $this->_rules[$key] = $value;
+        if ($value)
+        {
+            $this->_rule[$key] = $value;
+        }
+
+        else
+        {
+            unset(
+                $this->_rule[$key]
+            );
+        }
     }
 
+    // Convert DokuWiki text to Gemini
     public function toGemini(string $data, ?array &$lines = []): string
     {
         $raw = false;
 
         foreach ((array) explode(PHP_EOL, $data) as $line)
         {
-            // Skip any formating in lines between code tag
+            // Skip any formatting in lines between code tag
             if (!$raw && preg_match('/<(code|file)([^>])*>/i', $line, $matches))
             {
                 // Prepend tag meta or filename as plain description
@@ -169,15 +215,23 @@ class Reader
                 continue;
             }
 
-            // Apply common line rules
-            $lines[] = preg_replace(
+            // Apply config
+            $lines[] = str_replace(
                 array_keys(
-                    $this->_rules
+                    $this->_macros
                 ),
                 array_values(
-                    $this->_rules
+                    $this->_macros
                 ),
-                $line
+                preg_replace(
+                    array_keys(
+                        $this->_rule
+                    ),
+                    array_values(
+                        $this->_rule
+                    ),
+                    $line
+                )
             );
         }
 
