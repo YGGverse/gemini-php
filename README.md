@@ -38,7 +38,11 @@ echo $reader->setRule(
 
 #### Reader::toGemini
 
-Convert DokuWiki to Gemini markup
+Convert DokuWiki text to Gemini markup
+
+As wiki has lot of inline links, to make converted document well-readable, this method does not replace links with new line `=>` macros, but uses inline context: `Name ( URL )`. This model useful with `Reader::getLinks` method that, that for example appends all related links to the document footer.
+
+If you don't like this implementation, feel free to change it by `Reader::setRule` method.
 
 ```
 echo $reader->toGemini(
