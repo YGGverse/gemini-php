@@ -187,7 +187,6 @@ class Reader
                 // Make sure inline tag closed
                 if (preg_match('/<\/(code|file)>/i', $line))
                 {
-                    $lines[] = $line;
                     $lines[] = '```';
 
                     $raw = false;
