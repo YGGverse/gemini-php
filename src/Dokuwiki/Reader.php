@@ -40,25 +40,26 @@ class Reader
         '/\{\{\s?([^\}]+)\s?\}\}/' => '{{$1}}',
 
         /// Wikipedia
-        '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://$1.wikipedia.org/wiki/$2 $3' . PHP_EOL,
-        '/\[\[wp>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://en.wikipedia.org/wiki/$1 $2' . PHP_EOL,
+        '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/i' => '$3 ( https://$1.wikipedia.org/wiki/$2 )',
+        '/\[\[wp>([^\|]+)\|([^\]]+)\]\]/i' => '$2 ( https://en.wikipedia.org/wiki/$1 )',
 
         /// Dokuwiki
-        '/\[\[doku>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://www.dokuwiki.org/$1 $2' . PHP_EOL,
+        '/\[\[doku>([^\|]+)\|([^\]]+)\]\]/i' => '$2( https://www.dokuwiki.org/$1 )',
 
         /// Index
-        '/\{\{indexmenu>:([^\}]+)\}\}/i' => PHP_EOL . '=> $1' . PHP_EOL, // @TODO
+        '/\{\{indexmenu>:([^\}]+)\}\}/i' => '$1', // @TODO
         '/\{\{indexmenu_n>[\d]+\}\}/i' => '', // @TODO
 
         // Related
         '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
 
         /// Relative
-        '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2$3' . PHP_EOL,
-        '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2' . PHP_EOL,
+        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\|]+)\|([^\]]+)\]\]/i' => ' $2$3 ( /$1 )',
+        '/\[\[(?!https?:|this|doku|wp[A-z]{0,2})([^\]]+)\]\]/i' => ' $2 ( /$1 )',
 
         /// Absolute
-        '/\[\[(https?:|gemini:)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> $1$2 $3' . PHP_EOL,
+        '/\[\[(https?:)([^\|]+)\|([^\]]+)\]\]/i' => '$3 ( $1$2 )',
+        '/\[\[(https?:)([^\]]+)\]\]/i' => '$1$2', // @TODO
 
         // List
         '/^[\s]?-/' => '* ',
