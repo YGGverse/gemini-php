@@ -40,13 +40,10 @@ class Filesystem
             str_replace(
                 ':',
                 '/',
-                trim(
-                    mb_strtolower(
-                        urldecode(
-                            $uri
-                        )
-                    ),
-                    ':'
+                mb_strtolower(
+                    urldecode(
+                        $uri
+                    )
                 )
             )
         );
