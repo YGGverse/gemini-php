@@ -287,6 +287,8 @@ class Reader
             }
         }
 
-        return $links;
+        return array_unique(
+            $links
+        );
     }
 }
