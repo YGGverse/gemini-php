@@ -32,6 +32,13 @@ class Reader
 
         // Links
 
+        /// Remove extra spaces
+        '/\[\[\s?([^\|]+)\s?\|\s?([^\]]+)\s?\]\]/' => '[[$1|$2]]',
+        '/\[\[\s?([^\]]+)\s?\]\]/' => '[[$1]]',
+
+        '/\{\{\s?([^\|]+)\s?\|\s?([^\}]+)\s?\}\}/' => '{{$1|$2}}',
+        '/\{\{\s?([^\}]+)\s?\}\}/' => '{{$1}}',
+
         /// Wikipedia
         '/\[\[wp([A-z]{2,})>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://$1.wikipedia.org/wiki/$2 $3' . PHP_EOL,
         '/\[\[wp>([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> https://en.wikipedia.org/wiki/$1 $2' . PHP_EOL,
@@ -43,12 +50,12 @@ class Reader
         '/\{\{indexmenu>:([^\}]+)\}\}/i' => PHP_EOL . '=> $1' . PHP_EOL, // @TODO
         '/\{\{indexmenu_n>[\d]+\}\}/i' => '', // @TODO
 
+        // Related
+        '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
+
         /// Relative
         '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2$3' . PHP_EOL,
         '/\[\[(?!https?:|gemini:|this>|doku>|wp[A-z]{0,2}>)([^\]]+)\]\]/i' => PHP_EOL . '=> /$1 $2' . PHP_EOL,
-
-        // Related
-        '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
 
         /// Absolute
         '/\[\[(https?:|gemini:)([^\|]+)\|([^\]]+)\]\]/i' => PHP_EOL . '=> $1$2 $3' . PHP_EOL,
