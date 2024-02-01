@@ -36,6 +36,18 @@ echo $reader->setRule(
 );
 ```
 
+#### Reader::getMacroses
+#### Reader::setMacroses
+#### Reader::getMacros
+#### Reader::setMacros
+
+```
+echo $reader->setMacros(
+    '~my-macros-key~',
+    '~my-macros-value~',
+);
+```
+
 #### Reader::toGemini
 
 Convert DokuWiki text to Gemini markup
