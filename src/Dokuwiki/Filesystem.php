@@ -161,7 +161,7 @@ class Filesystem
     {
         foreach ((array) scandir($path) as $file)
         {
-            if (in_array($file, ['.', '..']))
+            if (in_array($file, ['.', '..']) || str_starts_with($file, '__'))
             {
                 continue;
             }
