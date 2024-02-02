@@ -251,7 +251,7 @@ class Reader
     {
         foreach ((array) explode(PHP_EOL, $gemini) as $line)
         {
-            preg_match_all(
+            preg_match(
                 $regex,
                 $line,
                 $matches
@@ -266,6 +266,8 @@ class Reader
                 break;
             }
         }
+
+        return null;
     }
 
     public function getLinks(string $gemini, ?string $regex = '/(https?|gemini):\/\/\S+/'): array
