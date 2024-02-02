@@ -60,7 +60,7 @@ class Reader
         '/\[\[doku>([^\]]+)\]\]/i' => '$1( https://www.dokuwiki.org/$1 )',
 
         /// Index
-        /// Server-side implementation: https://github.com/YGGverse/dokuwiki-gemini-server
+        /// Useful with src/Dokuwiki/Helper.php
         '/\{\{indexmenu>:([^\}]+)\}\}/i' => '',
         '/\{\{indexmenu_n>[\d]+\}\}/i' => '',
 

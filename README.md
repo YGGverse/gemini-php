@@ -173,3 +173,38 @@ var_dump (
     )
 )
 ```
+
+### Helper
+
+Useful methods to minify controller codebase
+
+```
+$helper = new \Yggverse\Gemini\Dokuwiki\Helper(
+    new \Yggverse\Gemini\Dokuwiki\Filesystem(),
+    new \Yggverse\Gemini\Dokuwiki\Reader()
+);
+```
+
+#### Filesystem::getChildrenSectionLinksByUri
+
+Return simple array of children section links in Gemini format
+
+```
+var_dump (
+    $helper->getChildrenSectionLinksByUri(
+        'hello:world'
+    )
+)
+```
+
+#### Filesystem::getChildrenPageLinksByUri
+
+Return simple array of children page links in Gemini format
+
+```
+var_dump (
+    $helper->getChildrenPageLinksByUri(
+        'hello:world'
+    )
+)
+```
