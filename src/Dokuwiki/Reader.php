@@ -60,8 +60,9 @@ class Reader
         '/\[\[doku>([^\]]+)\]\]/i' => '$1( https://www.dokuwiki.org/$1 )',
 
         /// Index
-        '/\{\{indexmenu>:([^\}]+)\}\}/i' => '', // @TODO
-        '/\{\{indexmenu_n>[\d]+\}\}/i' => '', // @TODO
+        /// Server-side implementation: https://github.com/YGGverse/dokuwiki-gemini-server
+        '/\{\{indexmenu>:([^\}]+)\}\}/i' => '',
+        '/\{\{indexmenu_n>[\d]+\}\}/i' => '',
 
         // Related
         '/\[\[this>([^\|]+)\|([^\]]+)\]\]/i' => '$2',
