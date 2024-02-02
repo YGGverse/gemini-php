@@ -32,6 +32,16 @@ class Filesystem
         return $this->_list;
     }
 
+    public function getPagePathsByPath(string $path): ?array
+    {
+        if (isset($this->_tree[$path]))
+        {
+            return $this->_tree[$path];
+        }
+
+        return null;
+    }
+
     public function getPagePathByUri(string $uri): ?string
     {
         $path = sprintf(

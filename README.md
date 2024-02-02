@@ -136,6 +136,18 @@ var_dump (
 )
 ```
 
+#### Filesystem::getPagePathsByPath
+
+Return pages under the given data directory
+
+```
+var_dump (
+    $filesystem->getPagePathsByPath(
+        // absolute path to target data directory (e.g. Filesystem::getDirectoryPathByUri)
+    )
+)
+```
+
 #### Filesystem::getDirectoryPathByUri
 #### Filesystem::getPagePathByUri
 
