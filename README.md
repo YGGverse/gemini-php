@@ -121,7 +121,7 @@ var_dump (
     $filesystem->getList(
         'hello:world'
     )
-)
+);
 ```
 
 #### Filesystem::getTree
@@ -133,7 +133,7 @@ var_dump (
     $filesystem->getTree(
         'hello:world'
     )
-)
+);
 ```
 
 #### Filesystem::getPagePathsByPath
@@ -145,7 +145,7 @@ var_dump (
     $filesystem->getPagePathsByPath(
         // absolute path to target data directory (e.g. Filesystem::getDirectoryPathByUri)
     )
-)
+);
 ```
 
 #### Filesystem::getDirectoryPathByUri
@@ -158,7 +158,7 @@ var_dump (
     $filesystem->getPagePathByUri(
         'hello:world'
     )
-)
+);
 ```
 
 #### Filesystem::getDirectoryUriByPath
@@ -171,7 +171,7 @@ var_dump (
     $filesystem->getPageUriByPath(
         '/full/path/to/page.txt'
     )
-)
+);
 ```
 
 ### Helper
@@ -185,7 +185,7 @@ $helper = new \Yggverse\Gemini\Dokuwiki\Helper(
 );
 ```
 
-#### Filesystem::getChildrenSectionLinksByUri
+#### Helper::getChildrenSectionLinksByUri
 
 Return simple array of children section links in Gemini format
 
@@ -194,10 +194,10 @@ var_dump (
     $helper->getChildrenSectionLinksByUri(
         'hello:world'
     )
-)
+);
 ```
 
-#### Filesystem::getChildrenPageLinksByUri
+#### Helper::getChildrenPageLinksByUri
 
 Return simple array of children page links in Gemini format
 
@@ -206,5 +206,19 @@ var_dump (
     $helper->getChildrenPageLinksByUri(
         'hello:world'
     )
-)
+);
+```
+
+#### Helper::getPageLinkByPath
+
+Return page link (that contain document name) in Gemini format
+
+```
+var_dump (
+    $helper->getPageLinkByPath(
+        $filesystem->getPagePathByUri(
+            'hello:world'
+        )
+    )
+);
 ```

@@ -110,19 +110,10 @@ class Helper
         {
             foreach ((array) $this->_filesystem->getPagePathsByPath($directory) as $file)
             {
-                $pages[] = sprintf(
-                    '=> /%s %s',
-                    $this->_filesystem->getPageUriByPath(
-                        $file
-                    ),
-                    $this->_reader->getH1(
-                        $this->_reader->toGemini(
-                            file_get_contents(
-                                $file
-                            )
-                        )
-                    )
-                );
+                if ($link = $this->getPageLinkByPath($file))
+                {
+                    $pages[] = $link;
+                }
             }
         }
 
@@ -137,5 +128,27 @@ class Helper
         );
 
         return $pages;
+    }
+
+    public function getPageLinkByPath(string $path): ?string
+    {
+        if (in_array($path, $this->_filesystem->getList()) && is_file($path) && is_readable($path))
+        {
+            return sprintf(
+                '=> /%s %s',
+                $this->_filesystem->getPageUriByPath(
+                    $path
+                ),
+                $this->_reader->getH1(
+                    $this->_reader->toGemini(
+                        file_get_contents(
+                            $path
+                        )
+                    )
+                )
+            );
+        }
+
+        return null;
     }
 }
