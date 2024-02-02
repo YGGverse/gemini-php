@@ -77,10 +77,6 @@ class Filesystem
             '/'
         );
 
-        $path = basename(
-            $path
-        );
-
         $path = str_replace(
             [
                 '/',
