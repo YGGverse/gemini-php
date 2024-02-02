@@ -132,7 +132,7 @@ class Filesystem
 
         $path = str_replace(
             sprintf(
-                '%s/pages/',
+                '%s/pages',
                 $this->_path
             ),
             '',
