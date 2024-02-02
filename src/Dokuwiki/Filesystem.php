@@ -163,11 +163,11 @@ class Filesystem
         return $path;
     }
 
-    private function _index(string $path): void
+    private function _index(string $path, ?array $blacklist = ['.', '..', 'sidebar.txt', '__template.txt']): void
     {
         foreach ((array) scandir($path) as $file)
         {
-            if (in_array($file, ['.', '..']) || str_starts_with($file, '__'))
+            if (in_array($file, $blacklist))
             {
                 continue;
             }
