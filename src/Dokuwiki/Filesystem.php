@@ -182,6 +182,8 @@ class Filesystem
             {
                 case is_dir($file):
 
+                    $this->_tree[$path] = [];
+
                     $this->_index($file);
 
                 break;
