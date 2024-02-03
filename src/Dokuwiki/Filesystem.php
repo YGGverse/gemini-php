@@ -165,7 +165,7 @@ class Filesystem
 
     public function getData(string $path): ?string
     {
-        if (isset($this->_list[$path]) && is_file($path) || is_readable($path))
+        if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
         {
             return file_get_contents(
                 $path
