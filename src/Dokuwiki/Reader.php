@@ -161,9 +161,16 @@ class Reader
     }
 
     // Convert DokuWiki text to Gemini
-    public function toGemini(string $data, ?array &$lines = []): string
+    public function toGemini(?string $data, ?array &$lines = []): ?string
     {
+        if (empty($gemini))
+        {
+            return null;
+        }
+
         $raw = false;
+
+        $lines = [];
 
         foreach ((array) explode(PHP_EOL, $data) as $line)
         {
@@ -247,9 +254,9 @@ class Reader
         );
     }
 
-    public function getH1(string $gemini, ?string $regex = '/^[\s]?#([^#]+)/'): ?string
+    public function getH1(?string $gemini, ?string $regex = '/^[\s]?#([^#]+)/'): ?string
     {
-        foreach ((array) explode(PHP_EOL, $gemini) as $line)
+        foreach ((array) explode(PHP_EOL, (string) $gemini) as $line)
         {
             preg_match(
                 $regex,
@@ -270,9 +277,14 @@ class Reader
         return null;
     }
 
-    public function getLinks(string $gemini, ?string $regex = '/(https?|gemini):\/\/\S+/'): array
+    public function getLinks(?string $gemini, ?string $regex = '/(https?|gemini):\/\/\S+/'): array
     {
         $links = [];
+
+        if (empty($gemini))
+        {
+            return $links;
+        }
 
         preg_match_all(
             $regex,
