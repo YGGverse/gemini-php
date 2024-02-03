@@ -174,6 +174,18 @@ var_dump (
 );
 ```
 
+#### Filesystem::getData
+
+Return file content if path match storage item
+
+```
+var_dump (
+    $filesystem->getData(
+        '/full/path/to/page.txt'
+    )
+);
+```
+
 ### Helper
 
 Useful methods to minify controller codebase

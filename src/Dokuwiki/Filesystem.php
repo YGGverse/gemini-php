@@ -163,6 +163,18 @@ class Filesystem
         return $path;
     }
 
+    public function getData(string $path): ?string
+    {
+        if (isset($this->_list[$path]) && is_file($path) || is_readable($path))
+        {
+            return file_get_contents(
+                $path
+            );
+        }
+
+        return null;
+    }
+
     private function _index(string $path, ?array $blacklist = ['.', '..', 'sidebar.txt', '__template.txt']): void
     {
         foreach ((array) scandir($path) as $file)
