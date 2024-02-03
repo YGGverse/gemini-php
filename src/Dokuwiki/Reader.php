@@ -163,7 +163,7 @@ class Reader
     // Convert DokuWiki text to Gemini
     public function toGemini(?string $data, ?array &$lines = []): ?string
     {
-        if (empty($gemini))
+        if (empty($data))
         {
             return null;
         }
