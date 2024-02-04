@@ -187,7 +187,7 @@ class Filesystem
         return $path;
     }
 
-    public function getData(?string $path): ?string
+    public function getDataByPath(?string $path): ?string
     {
         if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
         {

@@ -186,13 +186,13 @@ var_dump (
 );
 ```
 
-#### Filesystem::getData
+#### Filesystem::getDataByPath
 
 Return file content if path match storage item
 
 ```
 var_dump (
-    $filesystem->getData(
+    $filesystem->getDataByPath(
         '/full/path/to/page.txt'
     )
 );

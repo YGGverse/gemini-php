@@ -53,7 +53,7 @@ class Helper
                         {
                             $h1 = $this->_reader->getH1(
                                 $this->_reader->toGemini(
-                                    $this->_filesystem->getData(
+                                    $this->_filesystem->getDataByPath(
                                         $file
                                     )
                                 )
@@ -65,7 +65,7 @@ class Helper
                         {
                             $h1 = $this->_reader->getH1(
                                 $this->_reader->toGemini(
-                                    $this->_filesystem->getData(
+                                    $this->_filesystem->getDataByPath(
                                         $file
                                     )
                                 )
@@ -141,7 +141,7 @@ class Helper
                 ),
                 $this->_reader->getH1(
                     $this->_reader->toGemini(
-                        $this->_filesystem->getData(
+                        $this->_filesystem->getDataByPath(
                             $path
                         )
                     )
