@@ -187,6 +187,18 @@ class Filesystem
         return $path;
     }
 
+    public function getMimeByPath(?string $path): ?string
+    {
+        if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
+        {
+            return mime_content_type(
+                $path
+            );
+        }
+
+        return null;
+    }
+
     public function getDataByPath(?string $path): ?string
     {
         if (in_array($path, $this->_list) && is_file($path) || is_readable($path))

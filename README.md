@@ -186,6 +186,18 @@ var_dump (
 );
 ```
 
+#### Filesystem::getMimeByPath
+
+Return file MIME if path match storage item
+
+```
+var_dump (
+    $filesystem->getMimeByPath(
+        '/full/path/to/page.txt'
+    )
+);
+```
+
 #### Filesystem::getDataByPath
 
 Return file content if path match storage item
