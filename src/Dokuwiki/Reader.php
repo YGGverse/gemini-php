@@ -36,12 +36,15 @@ class Reader
         '/\%\%/' => '',
         '/\/\//' => '',
 
+        // Remove extra spaces
+        '/(\s)\s+/' => '$1',
+
         // Links
 
         /// Detect IPv6 (used as no idea how to resolve square quotes in rules below)
         '/\[\[([^\[]+)\[([A-f:0-9]*)\]([^\]]+)\]\]/' => '$1~IPv6:open~$2~IPv6:close~$3',
 
-        /// Remove extras
+        /// Remove extra chars
         '/\[\[\s*\:?([^\|]+)\s*\|\s*([^\]]+)\s*\]\]/' => '[[$1|$2]]',
         '/\[\[\s*\:?([^\]]+)\s*\]\]/' => '[[$1]]',
 
