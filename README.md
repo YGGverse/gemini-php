@@ -174,6 +174,18 @@ var_dump (
 );
 ```
 
+#### Filesystem::getMediaPathByUri
+
+Return absolute path to stored media file
+
+```
+var_dump (
+    $filesystem->getMediaPathByUri(
+        'hello:world'
+    )
+);
+```
+
 #### Filesystem::getData
 
 Return file content if path match storage item

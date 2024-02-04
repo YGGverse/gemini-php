@@ -163,7 +163,31 @@ class Filesystem
         return $path;
     }
 
-    public function getData(string $path): ?string
+    public function getMediaPathByUri(string $uri): ?string
+    {
+        $path = sprintf(
+            '%s/media/%s',
+            $this->_path,
+            str_replace(
+                ':',
+                '/',
+                mb_strtolower(
+                    urldecode(
+                        $uri
+                    )
+                )
+            )
+        );
+
+        if (!in_array($path, $this->_list) || !is_file($path) || !is_readable($path))
+        {
+            return null;
+        }
+
+        return $path;
+    }
+
+    public function getData(?string $path): ?string
     {
         if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
         {
