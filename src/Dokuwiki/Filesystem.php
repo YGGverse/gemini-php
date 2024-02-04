@@ -58,7 +58,7 @@ class Filesystem
             )
         );
 
-        if (!in_array($path, $this->_list) || !is_file($path) || !is_readable($path))
+        if (!$this->isPath($path))
         {
             return null;
         }
@@ -68,7 +68,7 @@ class Filesystem
 
     public function getPageUriByPath(string $path): ?string
     {
-        if (!in_array($path, $this->_list) || !is_file($path) || !is_readable($path))
+        if (!$this->isPath($path))
         {
             return null;
         }
@@ -179,7 +179,7 @@ class Filesystem
             )
         );
 
-        if (!in_array($path, $this->_list) || !is_file($path) || !is_readable($path))
+        if (!$this->isPath($path))
         {
             return null;
         }
@@ -189,11 +189,12 @@ class Filesystem
 
     public function getMimeByPath(?string $path): ?string
     {
-        if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
+        if ($this->isPath($path))
         {
-            return mime_content_type(
-                $path
-            );
+            if ($mime = mime_content_type($path))
+            {
+                return $mime;
+            }
         }
 
         return null;
@@ -201,14 +202,25 @@ class Filesystem
 
     public function getDataByPath(?string $path): ?string
     {
-        if (in_array($path, $this->_list) && is_file($path) || is_readable($path))
+        if ($this->isPath($path))
         {
-            return file_get_contents(
-                $path
-            );
+            if ($data = file_get_contents($path))
+            {
+                return $data;
+            }
         }
 
         return null;
+    }
+
+    public function isPath(?string $path): bool
+    {
+        if (in_array($path, $this->_list) && is_file($path) && is_readable($path))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private function _index(string $path, ?array $blacklist = ['.', '..', 'sidebar.txt', '__template.txt']): void

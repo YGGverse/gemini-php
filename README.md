@@ -210,6 +210,18 @@ var_dump (
 );
 ```
 
+#### Filesystem::isPath
+
+Check path exist and match storage item
+
+```
+var_dump (
+    $filesystem->isPath(
+        '/full/path/to/page.txt'
+    )
+);
+```
+
 ### Helper
 
 Useful methods to minify controller codebase
