@@ -181,20 +181,24 @@ class Reader
         foreach ((array) explode(PHP_EOL, $data) as $line)
         {
             // Skip any formatting in lines between code tag
-            if (!$raw && preg_match('/<(code|file)([^>])*>/i', $line, $matches))
+            if (!$raw && preg_match('/<(code|file)([^>]*)>/i', $line, $matches))
             {
                 // Prepend tag meta or filename as plain description
                 if (!empty($matches[0]))
                 {
                     $lines[] = preg_replace(
-                        '/^<.*\s(.+)>$/',
-                        '$1',
+                        '/<(code|file)[\s-]*([^>]*)>/i',
+                        '$2',
                         $matches[0]
                     );
                 }
 
                 $lines[] = '```';
-                $lines[] = $line;
+                $lines[] = preg_replace(
+                    '/<(code|file)[^>]*>/i',
+                    '',
+                    $line
+                );
 
                 $raw = true;
 
@@ -213,7 +217,12 @@ class Reader
 
             if ($raw && preg_match('/<\/(code|file)>/i', $line))
             {
-                $lines[] = $line;
+                $lines[] = preg_replace(
+                    '/<\/(code|file)>/i',
+                    '',
+                    $line
+                );
+
                 $lines[] = '```';
 
                 $raw = false;
@@ -251,11 +260,9 @@ class Reader
         return preg_replace(
             '/[\n\r]{2,}/',
             PHP_EOL . PHP_EOL,
-            strip_tags(
-                implode(
-                    PHP_EOL,
-                    $lines
-                )
+            implode(
+                PHP_EOL,
+                $lines
             )
         );
     }
