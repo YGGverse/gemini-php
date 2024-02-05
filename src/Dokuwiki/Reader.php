@@ -252,7 +252,9 @@ class Reader
                     array_values(
                         $this->_rule
                     ),
-                    $line
+                    strip_tags(
+                        $line
+                    )
                 )
             );
         }
