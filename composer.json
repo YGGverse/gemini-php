@@ -10,5 +10,7 @@
             "Yggverse\\Gemini\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "dekor/php-array-table": "^2.0"
+    }
 }

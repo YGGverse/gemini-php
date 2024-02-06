@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yggverse\Gemini\Dokuwiki;
 
+use dekor\ArrayToTextTable;
+
 class Reader
 {
     private array $_macros =
@@ -259,6 +261,80 @@ class Reader
             );
         }
 
+        // ASCII table
+        $table = false;
+
+        $rows = [];
+
+        $th = [];
+
+        foreach ($lines as $index => $line)
+        {
+            // Header
+            if (!$table && preg_match_all('/\^([^\^]+)/', $line, $matches))
+            {
+                if (isset($matches[1]) && count($matches[1]) > 1)
+                {
+                    $table = true;
+
+                    $rows = [];
+
+                    $th = [];
+
+                    foreach ($matches[1] as $value)
+                    {
+                        $th[] = trim(
+                            $value
+                        );
+                    }
+
+                    unset(
+                        $lines[$index]
+                    );
+
+                    continue;
+                }
+            }
+
+            // Body
+            if ($table)
+            {
+                $table = false;
+
+                if (preg_match(sprintf('/%s\|/', str_repeat('\|(.*)', count($th))), $line, $matches))
+                {
+                    if (count($matches) == count($th) + 1)
+                    {
+                        $table = true;
+
+                        $row = [];
+                        foreach ($th as $offset => $column)
+                        {
+                            $row[$column] = trim(
+                                $matches[$offset + 1]
+                            );
+                        }
+
+                        $rows[] = $row;
+
+                        unset(
+                            $lines[$index]
+                        );
+                    }
+                }
+
+                if (!$table && $rows)
+                {
+                    $builder = new ArrayToTextTable(
+                        $rows
+                    );
+
+                    $lines[$index] = '```' . PHP_EOL . $builder->render() . PHP_EOL . '```';
+                }
+            }
+        }
+
+        // Merge lines
         return preg_replace(
             '/[\n\r]{2,}/',
             PHP_EOL . PHP_EOL,
