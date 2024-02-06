@@ -198,7 +198,7 @@ class Reader
 
                 $lines[] = '```';
                 $lines[] = preg_replace(
-                    '/<(code|file)[^>]*>/i',
+                    '/<\/?(code|file)[^>]*>/i',
                     '',
                     $line
                 );
