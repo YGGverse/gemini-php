@@ -13,6 +13,7 @@ class Reader
         '~URL:base~' => null,
         '~IPv6:open~' => '[',
         '~IPv6:close~' => ']',
+        '~LINE:break~' => PHP_EOL
     ];
 
     private array $_rule =
@@ -88,7 +89,7 @@ class Reader
         '/^[\s]+\*/' => '*',
 
         // Separators
-        '/[\\\]{2}/' => PHP_EOL,
+        '/[\\\]{2}/' => '~LINE:break~',
 
         // Plugins
         '/~~DISCUSSION~~/' => '', // @TODO
@@ -240,23 +241,15 @@ class Reader
             }
 
             // Apply config
-            $lines[] = str_replace(
+            $lines[] = preg_replace(
                 array_keys(
-                    $this->_macros
+                    $this->_rule
                 ),
                 array_values(
-                    $this->_macros
+                    $this->_rule
                 ),
-                preg_replace(
-                    array_keys(
-                        $this->_rule
-                    ),
-                    array_values(
-                        $this->_rule
-                    ),
-                    strip_tags(
-                        $line
-                    )
+                strip_tags(
+                    $line
                 )
             );
         }
@@ -270,10 +263,17 @@ class Reader
 
         foreach ($lines as $index => $line)
         {
+            // Strip line breaks
+            $line = str_replace(
+                '~LINE:break~',
+                ' ',
+                $line
+            );
+
             // Header
             if (!$table && preg_match_all('/\^([^\^]+)/', $line, $matches))
             {
-                if (isset($matches[1]) && count($matches[1]) > 1)
+                if (!empty($matches[1]))
                 {
                     $table = true;
 
@@ -338,9 +338,17 @@ class Reader
         return preg_replace(
             '/[\n\r]{2,}/',
             PHP_EOL . PHP_EOL,
-            implode(
-                PHP_EOL,
-                $lines
+            str_replace(
+                array_keys(
+                    $this->_macros
+                ),
+                array_values(
+                    $this->_macros
+                ),
+                implode(
+                    PHP_EOL,
+                    $lines
+                )
             )
         );
     }
