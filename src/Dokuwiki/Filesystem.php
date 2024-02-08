@@ -223,10 +223,18 @@ class Filesystem
         return false;
     }
 
-    private function _index(string $path, ?array $blacklist = ['.', '..', 'sidebar.txt', '__template.txt']): void
+    private function _index(
+        string $path,
+        ?array $blacklist = ['sidebar.txt', '__template.txt']
+    ): void
     {
         foreach ((array) scandir($path) as $file)
         {
+            if (str_starts_with($file, '.'))
+            {
+                continue;
+            }
+
             if (in_array($file, $blacklist))
             {
                 continue;
