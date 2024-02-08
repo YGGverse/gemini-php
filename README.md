@@ -16,7 +16,7 @@ Allows to simple deploy new apps or make existing website mirror
 
 ### Examples
 
-* [DokuWiki Server for Gemini Protocol](https://github.com/YGGverse/dokuwiki-gemini-server)
+* [β-Doku](https://github.com/YGGverse/bdoku) - DokuWiki Satellite for Gemini Protocol
 
 ### Reader
 
