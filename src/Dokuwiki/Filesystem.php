@@ -235,6 +235,11 @@ class Filesystem
                 continue;
             }
 
+            if (is_link($file))
+            {
+                continue;
+            }
+
             if (in_array($file, $blacklist))
             {
                 continue;
