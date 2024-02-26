@@ -236,7 +236,7 @@ class Reader
             if ($raw)
             {
                 $lines[] = preg_replace(
-                    '/^\s*```/',
+                    '/^```/',
                     ' ```',
                     $line
                 );
